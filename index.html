@@ -3,28 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conexión con GPT</title>
+    <title>Coachtoring GPT</title>
 </head>
 <body>
-    <h1>Conexión con GPT</h1>
-    <p>Escribe un mensaje y presiona el botón para recibir una respuesta.</p>
-    
+    <h1>Coachtoring GPT</h1>
+    <p>Escribe un mensaje para interactuar con tu GPT personalizado:</p>
+
     <!-- Campo de texto para el mensaje -->
     <div>
         <textarea id="mensajeUsuario" placeholder="Escribe tu mensaje aquí" rows="5" cols="50"></textarea>
     </div>
-    
+
     <!-- Botón para enviar el mensaje -->
     <div>
         <button id="enviarMensaje">Enviar a GPT</button>
     </div>
-    
+
     <!-- Espacio para mostrar la respuesta -->
     <div>
+        <p><strong>Respuesta:</strong></p>
         <p id="respuestaGPT"></p>
     </div>
-    
-    <!-- Enlace al archivo de JavaScript -->
-    <script src="integracionGPT.js"></script>
+
+    <script>
+        // URL de tu GPT personalizado
+        const gptUrl = "https://chatgpt.com/g/g-67797d5018ac81918cbfb053cdccb1e3-coachtoring-gpt";
+
+        // Función para enviar mensajes al GPT personalizado
+        async function enviarMensaje() {
+            const mensajeUsuario = document.getElementById("mensajeUsuario").value;
+
+            try {
+                const response = await fetch(gptUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ input: mensajeUsuario })
+                });
+
+                const data = await response.json();
+                document.getElementById("respuestaGPT").textContent = data.output || "Sin respuesta";
+            } catch (error) {
+                console.error("Error al conectar con el GPT:", error);
+                document.getElementById("respuestaGPT").textContent = "Error al conectar con el GPT.";
+            }
+        }
+
+        // Vincular el botón para enviar el mensaje
+        document.getElementById("enviarMensaje").addEventListener("click", enviarMensaje);
+    </script>
 </body>
 </html>
+
